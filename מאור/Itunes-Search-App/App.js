@@ -4,6 +4,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomTab } from './src/navigation';
+import { Provider } from 'react-redux';
+import ReduxThunk from 'redux-thunk';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+
 
 I18nManager.forceRTL(false);
 I18nManager.allowRTL(false);
@@ -22,6 +26,12 @@ const loadFontsFromAssets = () => {
     'Baloo2-SemiBold' : require('./assets/fonts/Baloo2-SemiBold.ttf'),
   });
 }
+
+const rootReducer = combineReducers({
+  
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -56,9 +66,11 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <BottomTab/>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <BottomTab/>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
