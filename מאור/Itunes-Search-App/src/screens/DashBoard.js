@@ -42,12 +42,13 @@ const DashBoard = ({ navigation }) => {
             width:"100%",
             height:"100%"
         }}>
+            <StatusBar hidden/>
             <HeaderWithSearch
                 searchText={searchText}
                 setSearchResult={setSearchResult}
                 setSearchText={setSeacrhText}
             />
-            <StatusBar hidden/>
+            
             <View
                 style={{
                     flex:1,

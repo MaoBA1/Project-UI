@@ -3,11 +3,18 @@ import Colors from "../utilities/Colors";
 
 function HeaderWithSearch({ setSearchResult, searchText, setSearchText }) {
     const search = async() => {
-        const response = await fetch(`https://itunes.apple.com/search?term=${searchText}`, {
-            method:"GET"
-        })
-        const data = await response.json();
-        setSearchResult(data?.results);
+        try{
+            const response = await fetch(`https://itunes.apple.com/search?term=${searchText}`, {
+                method:"GET",
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await response.json();
+            setSearchResult(data?.results);
+        }catch(error) {
+            console.log(error);
+        }
     }
     return (
         <View style={{

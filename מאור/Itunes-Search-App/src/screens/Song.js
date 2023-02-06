@@ -13,6 +13,7 @@ function Song({ navigation, route }) {
         collectionName,
         releaseDate
     } = route.params.track;
+    console.log(route.params.track);
     const formattedReleaseDate = new Date(releaseDate)
     console.log(route);
         useLayoutEffect(() => {
