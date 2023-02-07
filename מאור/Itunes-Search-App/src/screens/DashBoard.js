@@ -48,12 +48,12 @@ const DashBoard = ({ navigation }) => {
                 if(Favorites_Artists) {
                     let action = getAllFavoriteArtistAction(JSON.parse(Favorites_Artists));
                     await dispatch(action);
-                    console.log("selector: " + JSON.stringify(artistSelector));
+                    // console.log("selector: " + JSON.stringify(artistSelector));
                 }
                 if(Favorites_Songs) {
                     let action = getAllFavoriteSongsAction(JSON.parse(Favorites_Songs));
                     await dispatch(action);
-                    console.log("selector: " + JSON.stringify(songSelector));
+                    // console.log("selector: " + JSON.stringify(songSelector));
                 }
             } catch(error) {
                 console.log(error);

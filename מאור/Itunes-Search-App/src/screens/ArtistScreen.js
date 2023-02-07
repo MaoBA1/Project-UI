@@ -1,7 +1,7 @@
 // https://itunes.apple.com/lookup?id=909253
 
 import React, { useEffect, useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { getSongLength } from './DashBoard';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from "../utilities/Colors";
@@ -20,18 +20,18 @@ function ArtistScreen({ navigation, route }) {
             });
     
             const data = await response.json();
-            setAllArtistSong(data);
+            setAllArtistSong(data.results);
         }
         getArtistData();
     },[])
 
-    
+    console.log(allArtistSong);
 
 
     return ( 
         <>
             {
-                allArtistSong.length === 0 ?
+                allArtistSong?.length === 0 ?
                 (
                     <View style={{
                         flex:1,
@@ -57,7 +57,7 @@ function ArtistScreen({ navigation, route }) {
                         backgroundColor:Colors.grey1
                     }}>
                     {
-                        allArtistSong.map((item, index) => 
+                        allArtistSong?.map((item, index) => 
                         <TouchableOpacity onPress={() => navigation.navigate("Song" , { track: item })} style={{
                             width:"100%",
                             padding:10,
