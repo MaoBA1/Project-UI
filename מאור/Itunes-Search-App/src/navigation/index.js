@@ -1,5 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Colors from '../utilities/Colors';
 
 // Screens
 
@@ -7,6 +9,7 @@ import DashBoard, { screenOptions as DashBoardScreenOptions } from '../screens/D
 import FavoriteArtist, { screenOptions as FavoriteArtistScreenOptions } from '../screens/FavoriteArtist';
 import FavoriteSong, { screenOptions as FavoriteSongScreenOptions } from '../screens/FavoriteSong';
 import Song, { screenOptions as SongScreenOptions } from '../screens/Song';
+import ArtistScreen from '../screens/ArtistScreen';
 
 const DashBoardStackNavigator = createStackNavigator();
 export const DashBoardStack = () => {
@@ -23,6 +26,29 @@ export const DashBoardStack = () => {
                 options={SongScreenOptions}
             />
         </DashBoardStackNavigator.Navigator>
+    )
+}
+
+
+const ArtistStackNavigator = createStackNavigator();
+export const ArtistStack = () => {
+    return(
+        <ArtistStackNavigator.Navigator>
+            <ArtistStackNavigator.Screen
+                name='Artists'
+                component={FavoriteArtist}
+            />
+            <ArtistStackNavigator.Screen
+                name='ArtistScreen'
+                component={ArtistScreen}
+                options={{}}
+            />
+            <ArtistStackNavigator.Screen
+                name='Song'
+                component={Song}
+                options={SongScreenOptions}
+            />
+        </ArtistStackNavigator.Navigator>
     )
 }
 
@@ -54,8 +80,20 @@ export const BottomTab = () => {
 
             <BottomTabNavigator.Screen
                 name='Artist'
-                component={FavoriteArtist}
-                options={FavoriteArtistScreenOptions}
+                component={ArtistStack}
+                options={{
+                    tabBarIcon:({ focused }) => {
+                        return(
+                            <Ionicons
+                                name={focused ? "ios-people" : "ios-people-outline"}
+                                size={focused ? 26 : 22}
+                                color={focused ? Colors.blue1 : "#FFFFFF"}
+                            />
+                        )
+            
+                    },
+                    headerShown:false
+                }}
             />
 
             <BottomTabNavigator.Screen

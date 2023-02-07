@@ -39,6 +39,17 @@ function Song({ navigation, route }) {
         return false;
     }
 
+    const songLiked = () => {
+        console.log(songsSelector);
+        if(songsSelector) {
+            const song = songsSelector.filter(song => song.trackId === trackId);
+            if(song.length === 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     
     const likeToArtist = async() => {
         try{
@@ -52,7 +63,7 @@ function Song({ navigation, route }) {
             }
             console.log(newListOfFavoritesArtist);
             let action = getAllFavoriteArtistAction(newListOfFavoritesArtist);
-            dispatch(action);
+            await dispatch(action);
         } catch(error) {
             console.log(error.message);
         }
@@ -70,7 +81,7 @@ function Song({ navigation, route }) {
             }
             console.log(newListOfFavoritesArtist);
             let action = getAllFavoriteArtistAction(newListOfFavoritesArtist);
-            dispatch(action);
+            await dispatch(action);
         } catch(error) {
             console.log(error.message);
         }
@@ -88,7 +99,7 @@ function Song({ navigation, route }) {
             }
             console.log(newListOfFavoritessong);
             let action = getAllFavoriteSongsAction(newListOfFavoritessong);
-            dispatch(action);
+            await dispatch(action);
         } catch(error) {
             console.log(error.message);
         }
@@ -105,37 +116,36 @@ function Song({ navigation, route }) {
                 await AsyncStorage.removeItem("Favorites_Songs");
             }
             console.log(newListOfFavoritesSongs);
-            let action = getAllFavoriteArtistAction(newListOfFavoritesSongs);
-            dispatch(action);
+            let action = getAllFavoriteSongsAction(newListOfFavoritesSongs);
+            await dispatch(action);
         } catch(error) {
             console.log(error.message);
         }
     }
 
-    console.log(route.params.track);
+    
 
     const formattedReleaseDate = new Date(releaseDate)
     useLayoutEffect(() => {
-            navigation.setOptions({
-                header: () => {
-                    return <View style={{
-                        width:"100%",
-                        height:100,
-                        alignItems:"center",
-                        justifyContent:"center",
-                        backgroundColor:Colors.black1,
-                    }}>
-                        <Text style={{
-                            fontFamily:"Baloo2-Bold",
-                            color:"#FFFFFF",
-                            top:10,
-                            fontSize:20,
-                            width:"87%",
-                        }} numberOfLines={1}>{trackName}</Text>
-                    </View>
-                } 
-            })
-        },[navigation])
+        navigation.setOptions({
+            header: () => {
+                return <View style={{
+                    width:"100%",
+                    height:100,
+                    alignItems:"center",
+                    justifyContent:"center",
+                    backgroundColor:Colors.black1,
+                }}>
+                    <Text style={{
+                        fontFamily:"Baloo2-Bold",
+                        color:"#FFFFFF",
+                        top:10,
+                        fontSize:20,
+                    }} numberOfLines={1}>{trackName}</Text>
+                </View>
+            } 
+        })
+    },[navigation]);
 
     return ( 
         <View style={{
@@ -173,29 +183,60 @@ function Song({ navigation, route }) {
                     justifyContent:"space-between",
                     margin:5
                 }}>
-                    <TouchableOpacity style={{
-                        alignSelf:"center",
-                        backgroundColor: Colors.blue1,
-                        padding: 5,
-                        borderRadius: 20,
-                        borderWidth:2,
-                        borderColor:"#FFFFFF",
-                        flexDirection:"row",
-                        width:125,
-                        justifyContent:"space-around"
-                    }}>
-                        <AntDesign
-                            name="hearto"
-                            color={"#FFFFFf"}
-                            size={20}
-                        />
-                        <Text style={{
-                            fontFamily:"Baloo2-Bold",
-                            color:"#FFFFFF"
-                        }}>
-                            Like To song
-                        </Text>
-                    </TouchableOpacity>
+                    {
+                        songLiked() ?
+                        (
+                            <TouchableOpacity onPress={unlikeToSong} style={{
+                                alignSelf:"center",
+                                backgroundColor: Colors.redUnlike,
+                                padding: 5,
+                                borderRadius: 20,
+                                borderWidth:2,
+                                borderColor:"#FFFFFF",
+                                flexDirection:"row",
+                                width:130,
+                                justifyContent:"space-around"
+                            }}>
+                                <AntDesign
+                                    name="dislike2"
+                                    color={"#FFFFFf"}
+                                    size={20}
+                                />
+                                <Text style={{
+                                    fontFamily:"Baloo2-Bold",
+                                    color:"#FFFFFF"
+                                }}>
+                                    Unlike To song
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                        :
+                        (
+                            <TouchableOpacity onPress={likeToSong} style={{
+                                alignSelf:"center",
+                                backgroundColor: Colors.blue1,
+                                padding: 5,
+                                borderRadius: 20,
+                                borderWidth:2,
+                                borderColor:"#FFFFFF",
+                                flexDirection:"row",
+                                width:125,
+                                justifyContent:"space-around"
+                            }}>
+                                <AntDesign
+                                    name="like2"
+                                    color={"#FFFFFf"}
+                                    size={20}
+                                />
+                                <Text style={{
+                                    fontFamily:"Baloo2-Bold",
+                                    color:"#FFFFFF"
+                                }}>
+                                    Like To song
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                    }
 
                     {
                         artistLiked() ? 
@@ -208,7 +249,7 @@ function Song({ navigation, route }) {
                                 borderWidth:2,
                                 borderColor:"#FFFFFF",
                                 flexDirection:"row",
-                                width:80,
+                                width:135,
                                 justifyContent:"space-around"
                             }} onPress={unlikeToArtist}>
                                 <AntDesign
@@ -220,7 +261,7 @@ function Song({ navigation, route }) {
                                     fontFamily:"Baloo2-Bold",
                                     color:"#FFFFFF"
                                 }}>
-                                    Unlike
+                                    Unlike To artist
                                 </Text>
                             </TouchableOpacity>
                         )

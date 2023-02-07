@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from "../utilities/Colors";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllFavoriteArtistAction } from '../../store/actions/index';
+import { getAllFavoriteArtistAction, getAllFavoriteSongsAction } from '../../store/actions/index';
 
 // My Components
 import HeaderWithSearch from "../components/HeaderWithSearch";
@@ -35,25 +35,33 @@ const DashBoard = ({ navigation }) => {
     const [ searchResult, setSearchResult ] = useState([]);
     const [ searchText, setSeacrhText ] = useState('');
     const [ isLoading, setISLoading ] = useState(false);
-    const selector = useSelector(state => state.Reducer.Artists);
+    const artistSelector = useSelector(state => state.Reducer.Artists);
+    const songSelector = useSelector(state => state.Reducer.Songs);
     const dispatch = useDispatch();
-    
+    // console.log("artist selector: " + JSON.stringify(artistSelector));
+    // console.log("song selector: " + JSON.stringify(songSelector));
     useEffect(() => {
         const getAllDataFromAsyncStorage = async() => {
             try{
                 const Favorites_Artists = await AsyncStorage.getItem('Favorites_Artists');
+                const Favorites_Songs = await AsyncStorage.getItem('Favorites_Songs');
                 if(Favorites_Artists) {
                     let action = getAllFavoriteArtistAction(JSON.parse(Favorites_Artists));
                     await dispatch(action);
-                    console.log("selector: " + JSON.stringify(selector));
+                    console.log("selector: " + JSON.stringify(artistSelector));
                 }
-                
+                if(Favorites_Songs) {
+                    let action = getAllFavoriteSongsAction(JSON.parse(Favorites_Songs));
+                    await dispatch(action);
+                    console.log("selector: " + JSON.stringify(songSelector));
+                }
             } catch(error) {
                 console.log(error);
             }
         }
 
-        // getAllDataFromAsyncStorage();
+        getAllDataFromAsyncStorage();
+
         // const removeAsyncStorage = async() => {
         //     await AsyncStorage.removeItem("Favorites_Artists");
         // }
