@@ -1,8 +1,10 @@
-import { View, TextInput } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Keyboard } from "react-native";
 import Colors from "../utilities/Colors";
 
-function HeaderWithSearch({ setSearchResult, searchText, setSearchText }) {
+function HeaderWithSearch({ setSearchResult, searchText, setSearchText, setIsLoading }) {
     const search = async() => {
+        setIsLoading(true);
+        Keyboard.dismiss();
         try{
             const response = await fetch(`https://itunes.apple.com/search?term=${searchText}`, {
                 method:"GET",
@@ -15,6 +17,7 @@ function HeaderWithSearch({ setSearchResult, searchText, setSearchText }) {
         }catch(error) {
             console.log(error);
         }
+        return setIsLoading(false);
     }
     return (
         <View style={{
@@ -25,12 +28,13 @@ function HeaderWithSearch({ setSearchResult, searchText, setSearchText }) {
             backgroundColor:Colors.black1,
             flexDirection:"row",
             alignItems:"center",
-            justifyContent:"center"
+            justifyContent:"space-around",
+            paddingHorizontal:15
         }}>
             <TextInput
                 style={{
                     top:10,
-                    width:"70%",
+                    width:"75%",
                     height:30,
                     borderRadius:20,
                     backgroundColor:"#FFFFFF",
@@ -42,8 +46,19 @@ function HeaderWithSearch({ setSearchResult, searchText, setSearchText }) {
                 placeholder="Search..."
                 value={searchText}
                 onChangeText={text => setSearchText(text)}
-                onChange={search}
             />
+            <TouchableOpacity onPress={search} style={{
+                backgroundColor: Colors.blue1,
+                top:10,
+                width:"18%",
+                alignItems:"center",
+                padding:5,
+                borderRadius:20,
+                borderWidth:2,
+                borderColor:"#FFFFFF"
+            }}>
+                <Text>Search</Text>
+            </TouchableOpacity>
         </View>
     )
 }

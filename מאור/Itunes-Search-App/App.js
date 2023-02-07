@@ -27,8 +27,10 @@ const loadFontsFromAssets = () => {
   });
 }
 
+import Reducer from './store/reducers/index';
+
 const rootReducer = combineReducers({
-  
+    Reducer: Reducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
