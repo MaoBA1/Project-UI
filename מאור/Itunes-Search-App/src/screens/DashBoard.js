@@ -53,7 +53,11 @@ const DashBoard = ({ navigation }) => {
             }
         }
 
-        getAllDataFromAsyncStorage();
+        // getAllDataFromAsyncStorage();
+        // const removeAsyncStorage = async() => {
+        //     await AsyncStorage.removeItem("Favorites_Artists");
+        // }
+        // removeAsyncStorage();
     }, []);
 
     

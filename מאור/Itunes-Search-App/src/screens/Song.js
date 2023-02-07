@@ -21,7 +21,8 @@ function Song({ navigation, route }) {
         trackTimeMillis,
         trackPrice,
         currency,
-        artworkUrl100
+        artworkUrl100,
+        trackId
     } = route.params.track;
     const artistSelector = useSelector(state => state.Reducer.Artists);
     const songsSelector = useSelector(state => state.Reducer.Songs);
@@ -96,21 +97,22 @@ function Song({ navigation, route }) {
     const unlikeToSong = async() => {
         try{
             const Favorites_Songs = await AsyncStorage.getItem('Favorites_Songs');
-            let newListOfFavoritesArtist = JSON.parse(Favorites_Songs).filter(song => song.artistId !== artistId);
-            if(newListOfFavoritesArtist.length > 0) {
-                await AsyncStorage.setItem("Favorites_Artists", JSON.stringify(newListOfFavoritesArtist));
+            let newListOfFavoritesSongs = JSON.parse(Favorites_Songs).filter(song => song.trackId !== trackId);
+            if(newListOfFavoritesSongs.length > 0) {
+                await AsyncStorage.setItem("Favorites_Songs", JSON.stringify(newListOfFavoritesSongs));
             } else {
-                newListOfFavoritesArtist = null;
-                await AsyncStorage.removeItem("Favorites_Artists");
+                newListOfFavoritesSongs = null;
+                await AsyncStorage.removeItem("Favorites_Songs");
             }
-            console.log(newListOfFavoritesArtist);
-            let action = getAllFavoriteArtistAction(newListOfFavoritesArtist);
+            console.log(newListOfFavoritesSongs);
+            let action = getAllFavoriteArtistAction(newListOfFavoritesSongs);
             dispatch(action);
         } catch(error) {
             console.log(error.message);
         }
     }
 
+    console.log(route.params.track);
 
     const formattedReleaseDate = new Date(releaseDate)
     useLayoutEffect(() => {
