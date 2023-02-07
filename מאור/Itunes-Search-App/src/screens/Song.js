@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSongLength } from '../screens/DashBoard';
-import { getAllFavoriteArtistAction } from '../../store/actions/index';
+import { getAllFavoriteArtistAction, getAllFavoriteSongsAction} from '../../store/actions/index';
 
 function Song({ navigation, route }) {
     const dispatch = useDispatch();
@@ -24,6 +24,7 @@ function Song({ navigation, route }) {
         artworkUrl100
     } = route.params.track;
     const artistSelector = useSelector(state => state.Reducer.Artists);
+    const songsSelector = useSelector(state => state.Reducer.Songs);
     
 
 
@@ -73,6 +74,44 @@ function Song({ navigation, route }) {
             console.log(error.message);
         }
     }
+
+    const likeToSong = async() => {
+        try{
+            const Favorites_Songs = await AsyncStorage.getItem('Favorites_Songs');
+            let newListOfFavoritessong = [route.params.track];
+            if(!Favorites_Songs) {
+                await AsyncStorage.setItem("Favorites_Songs", JSON.stringify(newListOfFavoritessong));
+            } else {
+                newListOfFavoritessong = [].concat( newListOfFavoritessong, JSON.parse(Favorites_Songs));
+                await AsyncStorage.setItem("Favorites_Songs", JSON.stringify(newListOfFavoritessong));
+            }
+            console.log(newListOfFavoritessong);
+            let action = getAllFavoriteSongsAction(newListOfFavoritessong);
+            dispatch(action);
+        } catch(error) {
+            console.log(error.message);
+        }
+    }
+
+    const unlikeToSong = async() => {
+        try{
+            const Favorites_Songs = await AsyncStorage.getItem('Favorites_Songs');
+            let newListOfFavoritesArtist = JSON.parse(Favorites_Songs).filter(song => song.artistId !== artistId);
+            if(newListOfFavoritesArtist.length > 0) {
+                await AsyncStorage.setItem("Favorites_Artists", JSON.stringify(newListOfFavoritesArtist));
+            } else {
+                newListOfFavoritesArtist = null;
+                await AsyncStorage.removeItem("Favorites_Artists");
+            }
+            console.log(newListOfFavoritesArtist);
+            let action = getAllFavoriteArtistAction(newListOfFavoritesArtist);
+            dispatch(action);
+        } catch(error) {
+            console.log(error.message);
+        }
+    }
+
+
     const formattedReleaseDate = new Date(releaseDate)
     useLayoutEffect(() => {
             navigation.setOptions({
