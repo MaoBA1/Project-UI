@@ -1,9 +1,8 @@
 import React, { useLayoutEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Colors from "../utilities/Colors";
 import { useDispatch, useSelector } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 function FavoriteArtist({ navigation }) {

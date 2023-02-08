@@ -52,6 +52,25 @@ export const ArtistStack = () => {
     )
 }
 
+
+const SongStackNavigator = createStackNavigator();
+export const SongStack = () => {
+    return(
+        <SongStackNavigator.Navigator>
+            <SongStackNavigator.Screen
+                name='Songs'
+                component={FavoriteSong}
+                options={FavoriteSongScreenOptions}
+            />
+            <SongStackNavigator.Screen
+                name='Song'
+                component={Song}
+                options={SongScreenOptions}
+            />
+        </SongStackNavigator.Navigator>
+    )
+}
+
 const BottomTabNavigator = createBottomTabNavigator();
 export const BottomTab = () => {
     return(
@@ -97,9 +116,22 @@ export const BottomTab = () => {
             />
 
             <BottomTabNavigator.Screen
-                name='Song'
-                component={FavoriteSong}
-                options={FavoriteSongScreenOptions}
+                name='Favorites_Songs'
+                component={SongStack}
+                options={{
+                    tabBarLabel:'Favorites Songs',
+                    tabBarIcon:({ focused }) => {
+                        return(
+                            <Ionicons
+                                name={focused ? "md-musical-notes" : "md-musical-notes-outline"}
+                                size={focused ? 26 : 22}
+                                color={focused ? Colors.blue1 : "#FFFFFF"}
+                            />
+                        )
+
+                    },
+                    headerShown: false
+                }}
             />
         </BottomTabNavigator.Navigator>
     )
